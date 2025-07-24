@@ -16,13 +16,16 @@ const resolvers = {
   },
 };
 
+//connecting the mongoDB database
 await connectDB();
 
+//creating the Apollo server instance
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
+//starting the server and listening on port 4000
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
