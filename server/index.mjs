@@ -7,6 +7,29 @@ const typeDefs = `#graphql
   type Query {
     hello: String
   }
+
+  type User {
+    _id: ID!
+    name: String!
+    email: String!
+    work: String
+  }
+
+  input SignupInput {
+    name: String!
+    email: String!
+    password: String!
+    work: String
+  }
+
+  type AuthPayload {
+  token: String!
+  user: User!
+  }
+
+  type Mutation {
+  signupUser(input: SignupInput!): AuthPayload
+  }
 `;
 
 //resolver to give what users want
