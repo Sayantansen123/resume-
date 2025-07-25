@@ -1,6 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import connectDB from "./db/connect.js";
+import { signupResolver } from "./resolver/signup.js";
+import { loginResolver } from "./resolver/login.js";
+import { logoutResolver } from "./resolver/logout.js";
 
 //graphql type definitions
 const typeDefs = `#graphql
@@ -22,20 +25,41 @@ const typeDefs = `#graphql
     work: String
   }
 
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
+  input LogoutInput {
+    token: String!
+  }
+
   type AuthPayload {
   token: String!
   user: User!
   }
 
-  type Mutation {
-  signupUser(input: SignupInput!): AuthPayload
+  type LogoutResponse {
+  message: String!
   }
+
+  type Mutation {
+  signupUser(input: SignupInput!): AuthPayload,
+  loginUser(input: LoginInput!): AuthPayload,
+  logoutUser(input: LogoutInput!): LogoutResponse
+  }
+
 `;
 
 //resolver to give what users want
 const resolvers = {
   Query: {
     hello: () => "Hello from Apollo Server v5!",
+  },
+  Mutation: {
+    signupUser: signupResolver,
+    loginUser: loginResolver,
+    logoutUser: logoutResolver,
   },
 };
 
